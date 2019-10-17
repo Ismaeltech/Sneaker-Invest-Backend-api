@@ -1,9 +1,9 @@
-class SneakersController < ApplicationController
+class SneakersController < ProtectedController
   before_action :set_sneaker, only: [:show, :update, :destroy]
 
   # GET /sneakers
   def index
-    @sneakers = Sneaker.all
+    @sneakers = current_user.sneakers
 
     render json: @sneakers
   end
@@ -15,7 +15,7 @@ class SneakersController < ApplicationController
 
   # POST /sneakers
   def create
-    @sneaker = Sneaker.new(sneaker_params)
+    @sneaker = current_user.sneakers.build(sneaker_params)
 
     if @sneaker.save
       render json: @sneaker, status: :created, location: @sneaker
@@ -41,7 +41,7 @@ class SneakersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_sneaker
-      @sneaker = Sneaker.find(params[:id])
+      @sneaker = current_user.sneakers.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
