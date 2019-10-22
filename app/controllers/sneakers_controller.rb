@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class SneakersController < ProtectedController
-  before_action :set_sneaker, only: [:show, :update, :destroy]
+  before_action :set_sneaker, only: %i[show update destroy]
 
   # GET /sneakers
   def index
@@ -39,13 +41,14 @@ class SneakersController < ProtectedController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_sneaker
-      @sneaker = current_user.sneakers.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def sneaker_params
-      params.require(:sneaker).permit(:price, :brand, :name, :user_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_sneaker
+    @sneaker = current_user.sneakers.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def sneaker_params
+    params.require(:sneaker).permit(:brand, :name, :price)
+  end
 end
